@@ -15,7 +15,12 @@
  * limitations under the License.
  */
 
-package org.keycloak.protocol.oidc.installation;
+package org.keycloak.protocol.saml.installation;
+
+import java.net.URI;
+
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 
 import org.keycloak.Config;
 import org.keycloak.models.ClientModel;
@@ -23,37 +28,49 @@ import org.keycloak.models.KeycloakSession;
 import org.keycloak.models.KeycloakSessionFactory;
 import org.keycloak.models.RealmModel;
 import org.keycloak.protocol.ClientInstallationProvider;
-import org.keycloak.protocol.oidc.OIDCLoginProtocol;
-
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import java.net.URI;
-import java.util.Map;
+import org.keycloak.protocol.saml.SamlClient;
+import org.keycloak.protocol.saml.SamlProtocol;
 
 /**
  * @author <a href="mailto:bill@burkecentral.com">Bill Burke</a>
  * @version $Revision: 1 $
  */
-public class KeycloakOIDCJbossSubsystemClientInstallation implements ClientInstallationProvider {
+public class KeycloakSamlSubsystemCliInstallation implements ClientInstallationProvider {
+
     @Override
     public Response generateInstallation(KeycloakSession session, RealmModel realm, ClientModel client, URI baseUri) {
-        String xml = new KeycloakOIDCJBossSubsystemXmlCreator().generateXml(session, realm, client, baseUri);
+        String xml = new KeycloakSamlSubsystemXmlCreator().generateXml(session, realm, client, baseUri);
         return Response.ok(xml, MediaType.TEXT_PLAIN_TYPE).build();
     }
 
     @Override
     public String getProtocol() {
-        return OIDCLoginProtocol.LOGIN_PROTOCOL;
+        return SamlProtocol.LOGIN_PROTOCOL;
     }
 
     @Override
     public String getDisplayType() {
-        return "Keycloak OIDC JBoss Subsystem XML";
+        return "Keycloak SAML Wildfly/JBoss Subsystem (CLI)";
     }
 
     @Override
     public String getHelpText() {
-        return "XML snippet you must edit and add to the Keycloak OIDC subsystem on your client app server.  This type of configuration is useful when you can't or don't want to crack open your WAR file.";
+        return "Keycloak SAML adapter Wildfly/JBoss subsystem cli commands.  Save this somewhere and install with /server/path/bin/jboss-cli.sh --file=<path to saved file>";
+    }
+
+    @Override
+    public String getFilename() {
+        return "keycloak-saml-subsystem.cli";
+    }
+
+    @Override
+    public String getMediaType() {
+        return MediaType.TEXT_PLAIN;
+    }
+
+    @Override
+    public boolean isDownloadOnly() {
+        return false;
     }
 
     @Override
@@ -78,22 +95,6 @@ public class KeycloakOIDCJbossSubsystemClientInstallation implements ClientInsta
 
     @Override
     public String getId() {
-        return "keycloak-oidc-jboss-subsystem";
-    }
-
-    @Override
-    public boolean isDownloadOnly() {
-        return false;
-    }
-
-    @Override
-    public String getFilename() {
-        return "keycloak-oidc-subsystem.xml";
-    }
-
-    @Override
-    public String getMediaType() {
-        return MediaType.APPLICATION_XML;
+        return "keycloak-saml-subsystem-cli";
     }
 }
-

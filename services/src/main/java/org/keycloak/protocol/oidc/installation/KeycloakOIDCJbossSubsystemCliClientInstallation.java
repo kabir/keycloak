@@ -17,6 +17,12 @@
 
 package org.keycloak.protocol.oidc.installation;
 
+import java.net.URI;
+import java.util.Map;
+
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
 import org.keycloak.Config;
 import org.keycloak.models.ClientModel;
 import org.keycloak.models.KeycloakSession;
@@ -25,16 +31,11 @@ import org.keycloak.models.RealmModel;
 import org.keycloak.protocol.ClientInstallationProvider;
 import org.keycloak.protocol.oidc.OIDCLoginProtocol;
 
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import java.net.URI;
-import java.util.Map;
-
 /**
  * @author <a href="mailto:bill@burkecentral.com">Bill Burke</a>
  * @version $Revision: 1 $
  */
-public class KeycloakOIDCJbossSubsystemClientInstallation implements ClientInstallationProvider {
+public class KeycloakOIDCJbossSubsystemCliClientInstallation implements ClientInstallationProvider {
     @Override
     public Response generateInstallation(KeycloakSession session, RealmModel realm, ClientModel client, URI baseUri) {
         String xml = new KeycloakOIDCJBossSubsystemXmlCreator().generateXml(session, realm, client, baseUri);
@@ -48,7 +49,7 @@ public class KeycloakOIDCJbossSubsystemClientInstallation implements ClientInsta
 
     @Override
     public String getDisplayType() {
-        return "Keycloak OIDC JBoss Subsystem XML";
+        return "Keycloak OIDC JBoss Subsystem CLI";
     }
 
     @Override
@@ -78,7 +79,7 @@ public class KeycloakOIDCJbossSubsystemClientInstallation implements ClientInsta
 
     @Override
     public String getId() {
-        return "keycloak-oidc-jboss-subsystem";
+        return "keycloak-oidc-jboss-subsystem-cli";
     }
 
     @Override
@@ -88,12 +89,12 @@ public class KeycloakOIDCJbossSubsystemClientInstallation implements ClientInsta
 
     @Override
     public String getFilename() {
-        return "keycloak-oidc-subsystem.xml";
+        return "keycloak-oidc-subsystem.cli";
     }
 
     @Override
     public String getMediaType() {
-        return MediaType.APPLICATION_XML;
+        return MediaType.TEXT_PLAIN;
     }
 }
 
