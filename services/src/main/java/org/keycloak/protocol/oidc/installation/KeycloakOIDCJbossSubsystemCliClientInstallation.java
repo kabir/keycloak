@@ -18,7 +18,6 @@
 package org.keycloak.protocol.oidc.installation;
 
 import java.net.URI;
-import java.util.Map;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -28,6 +27,7 @@ import org.keycloak.models.ClientModel;
 import org.keycloak.models.KeycloakSession;
 import org.keycloak.models.KeycloakSessionFactory;
 import org.keycloak.models.RealmModel;
+import org.keycloak.oidc.wildfly.xml.to.cli.KeycloakSubsystemXmlToCliUtil;
 import org.keycloak.protocol.ClientInstallationProvider;
 import org.keycloak.protocol.oidc.OIDCLoginProtocol;
 
@@ -39,7 +39,13 @@ public class KeycloakOIDCJbossSubsystemCliClientInstallation implements ClientIn
     @Override
     public Response generateInstallation(KeycloakSession session, RealmModel realm, ClientModel client, URI baseUri) {
         String xml = new KeycloakOIDCJBossSubsystemXmlCreator().generateXml(session, realm, client, baseUri);
-        return Response.ok(xml, MediaType.TEXT_PLAIN_TYPE).build();
+        KeycloakSubsystemXmlToCliUtil util = new KeycloakSubsystemXmlToCliUtil();
+        try {
+            String cli = util.oidcXmlToCli(xml);
+            return Response.ok(cli, MediaType.TEXT_PLAIN_TYPE).build();
+        } catch (Exception e) {
+            return Response.status(500, e.getLocalizedMessage()).build();
+        }
     }
 
     @Override

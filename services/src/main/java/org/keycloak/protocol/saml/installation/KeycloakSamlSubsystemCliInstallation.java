@@ -27,8 +27,8 @@ import org.keycloak.models.ClientModel;
 import org.keycloak.models.KeycloakSession;
 import org.keycloak.models.KeycloakSessionFactory;
 import org.keycloak.models.RealmModel;
+import org.keycloak.oidc.wildfly.xml.to.cli.KeycloakSubsystemXmlToCliUtil;
 import org.keycloak.protocol.ClientInstallationProvider;
-import org.keycloak.protocol.saml.SamlClient;
 import org.keycloak.protocol.saml.SamlProtocol;
 
 /**
@@ -39,8 +39,15 @@ public class KeycloakSamlSubsystemCliInstallation implements ClientInstallationP
 
     @Override
     public Response generateInstallation(KeycloakSession session, RealmModel realm, ClientModel client, URI baseUri) {
+
         String xml = new KeycloakSamlSubsystemXmlCreator().generateXml(session, realm, client, baseUri);
-        return Response.ok(xml, MediaType.TEXT_PLAIN_TYPE).build();
+        KeycloakSubsystemXmlToCliUtil util = new KeycloakSubsystemXmlToCliUtil();
+        try {
+            String cli = util.samlXmlToCli(xml);
+            return Response.ok(cli, MediaType.TEXT_PLAIN_TYPE).build();
+        } catch (Exception e) {
+            return Response.status(500, e.getLocalizedMessage()).build();
+        }
     }
 
     @Override

@@ -34,5 +34,6 @@
         <module>adduser</module>
         <module>extensions</module>
         <module>server-subsystem</module>
+        <module>xml-to-cli</module>
     </modules>
 </project>
