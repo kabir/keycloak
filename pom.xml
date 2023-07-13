@@ -1501,6 +1501,12 @@
             </dependency>
             <dependency>
                 <groupId>org.keycloak</groupId>
+                <artifactId>keycloak-saml-adapter-galleon-pack</artifactId>
+                <version>${project.version}</version>
+                <type>zip</type>
+            </dependency>
+            <dependency>
+                <groupId>org.keycloak</groupId>
                 <artifactId>keycloak-saml-tomcat-adapter-core</artifactId>
                 <version>${project.version}</version>
             </dependency>
