@@ -29,7 +29,7 @@ import java.util.stream.Collectors;
 
 public class KeycloakSamlAdapterLayerMetaDataTestCase {
 
-    private static String URL_PROPERTY = "glow-galleon-feature-packs-url";
+    private static String URL_PROPERTY = "wildfly-glow-galleon-feature-packs-url";
     private static Path ARCHIVES_PATH = Paths.get("target/glow-archives");
 
     @BeforeClass
@@ -80,6 +80,6 @@ public class KeycloakSamlAdapterLayerMetaDataTestCase {
         Arguments arguments = Arguments.scanBuilder().setBinaries(Collections.singletonList(p)).build();
         ScanResults scanResults = GlowSession.scan(MavenResolver.newMavenResolver(), arguments, GlowMessageWriter.DEFAULT);
         Set<String> foundLayers = scanResults.getDiscoveredLayers().stream().map(l -> l.getName()).collect(Collectors.toSet());
-        Assert.assertTrue(foundLayers.contains("keycloak-saml"));
+        Assert.assertTrue(foundLayers.toString(), foundLayers.contains("keycloak-saml") && foundLayers.contains("keycloak-client-saml"));
     }
 }

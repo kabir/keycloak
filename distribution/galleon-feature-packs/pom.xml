@@ -30,6 +30,12 @@
     <artifactId>galleon-feature-packs-parent</artifactId>
     <packaging>pom</packaging>
 
+    <properties>
+        <wildfly.version>29.0.0.Final-SNAPSHOT</wildfly.version>
+        <wildfly.build-tools.version>1.2.13.Final</wildfly.build-tools.version>
+        <wildfly.core.version>21.1.0.Beta2</wildfly.core.version>
+    </properties>
+
     <modules>
         <module>saml-adapter-galleon-pack</module>
         <module>saml-adapter-galleon-pack-layer-metadata-tests</module>
